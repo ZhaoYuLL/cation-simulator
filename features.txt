@@ -1,0 +1,27 @@
+Charges: 
+ - charge avatar
+ - controls
+ - maps
+ - point charges
+ - rendering the equipotentials/electric field
+ - level system
+ - timer
+ - points
+ - starting and ending points
+
+extra features to leave room for
+ - wires (magnetic fields ...)
+ - wacky surfaces of weird shapes and sizes
+ - special looking charges
+ - win screen
+ - special moves (reverse charge, change mass)
+ - graphics
+ - background game music
+ - polygonal collisions system (pixel color checks)
+ - moving charges that are not the player charge
+
+
+
+GENERAL NOTES:
+ - we are calculating each frame as 1/60th of a second, during which all forces and accelerations are constant, but re-calculated each frame
+ - maybe 1/30th if too laggy

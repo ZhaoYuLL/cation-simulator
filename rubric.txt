@@ -1,0 +1,8 @@
+5% initial proposal
+15% final proposal
+30% accuracy of physics
+Program stability/friendliness: 20% don't compile or require libraries to be installed, should not require a terminal, can be unintuitive but documented)if .exe installs library when you just double click itit's fine,  20% Program stability/friendliness
+concept/difficulty of implementation 20%
+accuracy of physics: 30% (if you are using a library for physics, you are not following the guidelines of the project. you may use physics engines just for vector notation, collision detection, but not physics. accuracy: you can turn off the friction switch but not gravity. no turning a switch and turning off the gravity. )
+README: 5%
+Video 5% (basically a screencast, no audio required.  show how to win all the levels or show what happens in a simulation with all the controls. show all the easter eggs)

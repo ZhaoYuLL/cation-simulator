@@ -1,16 +1,153 @@
+<!--
+
+PLEASE PLEASE PLEASE PLEASE PLEASE PLEASE
+MAKE SURE YOUR TAB-WIDTH IS SET TO 4
+CODE WILL LOOK VERY UGLY OTHERWISE
+THANK
+
+-->
+
 <!DOCTYPE html>
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Cation Simulator :3</title>
+    <link rel="icon" href="fav2.ico">
+<!--     <link rel = "stylesheet" href = "style.css"" -->
+    <script src="p5.js" type="text/javascript"></script>
+    <style>
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    background-color: rgb(122, 122, 122);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+#container {
+    position: relative;
+    width: min(100vh, 100vw + 30px);
+    height: min(100vh, 100vw + 30px);
+}
+header {
+    position: relative;
+    height: 30px;
+    background-color: rgb(60, 70, 122);
+    color: white;
+    font-family: sans-serif;
+    font-size: 20px
+}
+header p {
+    margin: 0px;
+    margin-top: 2px;
+}
+#timer, #potometer, #points, #info, #charge{
+    width: 20%;
+    float: left;
+    text-align: center;
+    font-size: 11px; /* 20px */
+}
+#canvas-container, #level-select, #win-screen, #lose-screen {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 30px);
+    left: 0px;
+    top: 30px;
+    background-color: rgb(200, 200, 200);
+}
+#level-select, #win-screen, #lose-screen {
+    display: none;
+}
+
+#win-screen, #lose-screen {
+    opacity: 0.8;
+}
+
+#canvas-container canvas {
+    width: 100%;
+    height: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+}
+
+.level {
+    margin-left: 2px;
+    width: 115px;
+    height: 100px;
+    cursor: pointer;
+    background-color: rgba(60, 60, 120, 1);
+}
+
+.level p {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin: auto;
+    padding-top: 40px;
+}
+
+    </style>
 </head>
 
 <body>
-  Hello world
-  <script src="script.js"></script>
+    <div id="container">
+        <header>
+            <div id="timer"><p>Time: 68:72:04</p></div>
+            <div id="potometer"><p>+70V</p></div>
+            <div id="points"><p>Points: 7800</p></div>
+            <div id="info"><p></p></div>
+            <div id="charge"><p>Charge: 0</p></div>
+        </header>
+      
+        <div id="canvas-container"></div>
+        <div id="level-select">
+            <table>
+                <tr>
+                    <td><div class="level" onclick="callLevel(1);"><p>Level 1</p></div></td>
+                    <td><div class="level" onclick="callLevel(2);"><p>Level 2</p></div></td>
+                    <td><div class="level" onclick="callLevel(3);"><p>Level 3</p></div></td>
+                    <td><div class="level" onclick="callLevel(4);"><p>Level 4</p></div></td>
+                    <td><div class="level" onclick="callLevel(5);"><p>Level 5</p></div></td>
+                </tr>
+                <tr>
+                    <td><div class="level" onclick="callLevel(6);"><p>Level 6</p></div></td>
+                    <td><div class="level" onclick="callLevel(7);"><p>Level 7</p></div></td>
+                    <td><div class="level" onclick="callLevel(8);"><p>Level 8</p></div></td>
+                    <td><div class="level" onclick="callLevel(9);"><p>Level 9</p></div></td>
+                    <td><div class="level" onclick="callLevel(10);"><p>Level 10</p></div></td>
+                </tr>
+            </table>
+        </div>
+        <div id="win-screen">
+            <h1>YOU WIN! YOU WIN!</h1>
+            <h3>Good job Good job</h3>
+            <p>The winner is you</p>
+            <button id="restart">Restart</button>
+        </div>
+        <div id="lose-screen">
+            <h1>YOU LOSE! YOU LOSE!</h1>
+            <h3>BAD job BAD job</h3>
+            <p>The loser is you ;(</p>
+            <button id="restart2">Restart</button>
+        </div>
+    </div>
+    <script src="scripts/coins.js" type="text/javascript"></script>
+    <script src="scripts/polyWall.js" type="text/javascript"></script>
+    <script src="scripts/rectWall.js" type="text/javascript"></script>
+    <script src="scripts/ballWall.js" type="text/javascript"></script>
+    <script src="scripts/playerCharge.js" type="text/javascript"></script>
+    <script src="scripts/pointCharge.js" type="text/javascript"></script>
+    <script src="scripts/winbox.js" type="text/javascript"></script>
+    <script src="scripts/level.js" type="text/javascript"></script>
+    <script src="scripts/game.js" type="text/javascript"></script>
+    <script src="scripts/screens.js" type="text/javascript"></script>
+    <audio src="music/subsea.ogg" id="music" />
 </body>
+
+    
 
 </html>

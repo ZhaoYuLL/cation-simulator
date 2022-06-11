@@ -1,0 +1,79 @@
+window.requestAnimationFrame
+if we finish this and still have enough time (say by Friday)
+we'll have time to port this to C++ XD
+
+charges:
+
+object TestCharge
+    - position
+    - charge
+    - mass
+    - velocity
+    - draw
+
+object PointCharge
+    - position
+    - charge
+    - getElectricField(position)
+    - getElectricFieldLines
+    - getVelocityIntegralComponents
+    - getEquipotentialLines
+    - draw
+
+object Wire
+    - getEquipotentialLines
+    - draw
+
+object RandomSurface
+    - polygonalVertices[]
+    - getEquipotentialLines
+    - draw
+
+object Level
+    - array of elements and their positions
+    - starting and ending positions
+    - pointCharge[]
+
+levels[]
+status = "levelSelect" | "gaming" | "winn"
+tickLength = 0.5         // ig we will try to use symbolic integration to try to smooth over any issues with variable time steps.
+resolutionEP = 0.5V
+maxPercentage
+minPercentage
+currentLevelElements[]
+canvasSize
+cameraX
+cameraY
+cameraScale
+startingTime
+points
+
+calculateXY(position, cameraPosition, cameraScale)
+    - returns the adjusted position
+
+setup()
+ - setup canvas size and bg screen
+ - load static resources
+ - randomly generate levels
+
+draw()
+ - level select / play button (render as HTML)
+ - actual gameplay
+    - take in control inputs
+       - use mouseX, mouseY, test charge positions
+    - calculate the forces on the test charge
+    - use the integral of the acceleration function for the previous time step
+    - adjust the test charge's position, velocity, and acceleration
+    - render elements
+    - recalculate equipotential fields for variable elements
+    - render equipotential fields
+    - render timer (html)
+    - update points (html)
+ - winscreen
+
+
+eventListeners for input
+when user clicks level play button -> load in level functionality
+ - calculate electric field lines, equipotential fields
+ - populate currentLevelElements[]
+ - start timer

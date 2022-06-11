@@ -1,0 +1,31 @@
+Ramp/rollercoaster:
+ - ball
+ - track
+ - start and end
+ - track elements
+    - friction part
+    - speed and ice parts
+    - loop-de-loops
+    - range of acceptable distance and end
+ - select and move the element
+ - tracking velocity, acceleration, normal force
+ - accounting for when the ball isn't on the track
+ - level system
+ - gravity
+ - racing two balls
+
+extra features to account for
+ - zoom in/out
+ - more and more track element types
+ - air resistance?
+ - more abilities to modify the track elements
+ - graphics
+ - real-time skipping the frame?
+
+
+
+
+
+GENERAL NOTES:
+ - we are calculating each frame as 1/60th of a second, during which all forces and accelerations are constant, but re-calculated each frame
+ - maybe 1/30th if too laggy

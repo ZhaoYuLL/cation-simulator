@@ -1,0 +1,108 @@
+most pressing to-do tasks:
+collisions system (ending the game or bouncing the particle or colliding with a coin)
+ - playerCharge position, radius, and velocity will be passed to level.js
+ - the points and their colors will be found using a hitbox style loop.
+    - if a black color is found, the game basically ends automatically
+    - if a yellow color is found (coins will have a two-tone image texture), the correct coins is found and disappeared, points increase
+    - if a blue/black or red/black color is found, the game also ends automatically (maybe an explosion animation is triggered)
+    - i think bouncing the particle will be too hard and not necessary for the game
+
+***above is done except coins***
+
+ - next game status and points will be return to level.js
+contour lines
+ - drawEquis() will be updated
+ - non-constant obbies will have a function equiFactor() that will return the factor to multiply when summing the table.
+ - also, non-constant obbies will have a function timeStep that must be called iteratively by the level class and initiated in game.js
+ - if the obbies move, then calculate table function will be called again
+ - we might have an easier time if we have multiple transparent canvases stacked over each other, and we split it into different folders
+   for the script. not easier, but faster anyway.
+ - for optimization, we'll probably want to preload the contour lines onto a separate transparent canvas in the background
+    - we'll have several polygonal contour lines with their times, and p5 will calculate a linear interpolation based on the time
+wires magnetic field
+move the winbox functions around
+nicer html design
+port to OpenGL / C++ in the final weekend
+
+#### game.js
+canvasParent
+CTX_CAMERA, CTX_htmlWIDTH, CTX_htmlHEIGHT, CTX_playerCharge, CTX_level
+pX, pY, p, sX, sY, s
+gameStatus, fireCharge, startTime, points
+
+force_applied(mass, acceleration), outBox(x, y, r), inControlSpace(mX, mY, pCharge)
+loadLevel(n) : sets CTX_level, CTX_CAMERA, CTX_playerCharge, points, startTime
+setup() : creates canvas
+inControlSpace(mX, mY, pC) : checks if mouse is close enough to player charge
+draw() :
+ - sets CTX_html*
+ - draws background-equis-obbies-barriers-coins-winbox
+ - checks collisions
+ - draw CTX_playerCharge
+ - controls (draw + apply force)
+ - checks winbox collision
+ - checks canvas border collision (should re-order these last two to be with collisions)
+ - applies CTX_level.FeAtPoint to CTX_playerCharge
+ - CTX_playerCharge.move();
+ - clears forces
+ - clears fireCharge
+
+#### level.js
+init : pseudo-language that accepts (PC, RW, WB, CN)
+    this : x, y, w, h, px, py, pm, pq, res, obbies, barriers, coins, winbox, const_voltageTable
+---------------------------------------------
+FeAtPoint(x,y,q) : calculates net electric force from obbies at a point
+FmAtPoint(x,y,v,q) : calculates net magnetic force from obbies at a point
+drawEquis() : will do contour lines, doesn't yet
+drawObbies() : should probably draw the endbox here, too
+drawBarriers() : 
+drawCoins() : 
+drawBackground() : simply a cosmetic feature
+inEndbox(coords) : empty, probably should replace game.js's outBox()
+checkCollisions() : check if player charge collided with something, handle bounce and return whether game ended
+colliding(charge) : bounce the player charge if the center is over a black pixel
+
+#### playerCharge.js
+init : x, y, mass, charge
+    this : x, y, r, vx, vy, ax, ay, m, q, controlRadius
+---------------------------------------------
+applyForce(F), clearForces, move(t) : applies forces, clears forces, moves
+draw() : draws + sends info of player charge to index.html
+    those info being:
+    - acceleration : ((this.ax ** 2 + this.ay ** 2) ** 0.5)
+    - charge : this.q 
+
+
+#### pointCharge.js
+init: x, y, charge
+    this : x, y, q, constantVoltage
+---------------------------------------------
+field(x,y) : calculating field for forces in draw
+setVoltageTable(w,h,res) : creates constant voltage of voltage of a point charge when a level is created. array of tables.
+draw() : draw + updates color
+
+#### screens.js
+levelSelect, winScreen, loseScreen, btn, btn2
+---------------------------------------------
+callLevel(num) : calls the level that the player clicks on
+win(): displays winning screen, pauses music
+lose() : displays losing screen, pauses muisc
+restartButton(): takes player to home screen when clicked (maybe change to callLevel(num) instead)
+LEVEL_DATA{} : sets up the level width and height, 
+            sets up the position and amount of:
+            - obstacles,
+            - point charges, 
+            - player charge  
+            - polyWalls,etc
+
+#### winbox.js
+init: x,y,w,h
+    this: x,y,w,h
+---------------------------------------------
+inBox(x,y) : checks if playerCharge is inside the winbox
+draw() : draws a rectangular winbox
+
+
+
+
+intentionally undocumented: ballWall.js, coins.js, polyWall.js, rectWall.js

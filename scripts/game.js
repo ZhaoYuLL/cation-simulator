@@ -1,5 +1,5 @@
 var canvasParent = document.getElementById('canvas-container');
-var CTX_CAMERA = {x: 500, y: 500, w: 1000, h: 1000};
+var CTX_CAMERA = {x: 500, y: 500, w: 1000, h: 1000, th: 0.25};
 var CTX_htmlWIDTH = parseInt(canvasParent.offsetWidth);
 var CTX_htmlHEIGHT = parseInt(canvasParent.offsetHeight);
 function pX(x) {
@@ -46,14 +46,15 @@ function updateCanvas(sketch) {
 function loadLevel(n) {
     CTX_level = new Level(LEVEL_DATA[n]);
     // camera should be initalized by level data
-    CTX_CAMERA = {x: CTX_level.x, y: CTX_level.y, w: CTX_level.w, h: CTX_level.h};
+    // th * CTX_level.x is the left-most position of PC before the camera pans left
+    CTX_CAMERA = {x: CTX_level.x, y: CTX_level.y, w: CTX_level.cw, h: CTX_level.ch, th: CTX_level.th};
 
     // so should player charge
     const x = CTX_level.px;
     const y = CTX_level.py;
     const mass = CTX_level.pm; //kg
     const charge = CTX_level.pq; //C
-    
+
     CTX_playerCharge = new PlayerCharge(x, y, mass, charge);
     points = CTX_level.points; //50000;
     startTime = new Date().valueOf();
@@ -63,26 +64,35 @@ function loadLevel(n) {
     document.querySelector("#music").play();
     gameStatus = "playing";
 
+    DRAWEQUIS = true;
     BGRealmSketch.draw();
     ObstacleRealmSketch.draw();
     //PlayerRealmSketch.draw();
 }
 
 var BGRealmSketch;
+var DRAWEQUIS;
 var BGRealm = function(sketch) { // contour lines, information, bg color
     var canvas;
     sketch.setup = function() {
         canvas = sketch.createCanvas(CTX_htmlWIDTH, CTX_htmlHEIGHT);
         canvas.parent('canvas-container');
-        sketch.frameRate(1);
+        sketch.frameRate(30);
         BGRealmSketch = sketch;
     }
     sketch.draw = function() {
         if (gameStatus == "playing") {
             updateCanvas(sketch);
             CTX_level.drawBackground(sketch);
-            CTX_level.drawEquis(sketch, 0);
-            sketch.noLoop();
+            console.log("something2");
+            if (DRAWEQUIS) {
+                CTX_level.drawEquis(sketch, 0);
+                console.log("something");
+                document.querySelector("#equis-img").src = canvas.elt.toDataURL("image/png");
+                DRAWEQUIS = false;
+            }
+            canvas.elt.getContext('2d').drawImage(document.querySelector("#equis-img"), pX(0), pY(CTX_level.h), sX(CTX_level.w), -1 * sY(CTX_level.h));
+            //console.log([pX(0), pY(0), pX(CTX_level.w), pY(CTX_level.h)]);
         }
     }
 };
@@ -94,7 +104,7 @@ var ObstacleRealm = function(sketch) {  // point charges, coins, rectangular wal
     sketch.setup = function() {
         canvas = sketch.createCanvas(CTX_htmlWIDTH, CTX_htmlHEIGHT);
         canvas.parent('canvas-container');
-        sketch.frameRate(5);
+        sketch.frameRate(30);
     }
     sketch.draw = function() {
         if (gameStatus == "playing") {
@@ -122,19 +132,19 @@ var PlayerRealm = function(sketch) { // player charge, mouse, controls
     sketch.draw = function() {
         if (gameStatus == "playing" && CTX_level && CTX_playerCharge) {
             updateCanvas(sketch);
-            
+
             // then draw the player charge
             CTX_playerCharge.draw(sketch);
-            
+
             // apply forces
             var coords = CTX_playerCharge;
             if (inControlSpace(sketch.mouseX, sketch.mouseY, CTX_playerCharge)) {
                 sketch.fill(0);
-                
+
                 if (!sketch.mouseIsPressed && !fireCharge) {
                     sketch.fill(255, 0, 0);
                     fireCharge = false; //true
-    
+
                     var dx = sketch.mouseX - pX(coords.x); // on the order of 10
                     var dy = sketch.mouseY - pY(coords.y); // we may need inverse p's and s's for this to work
                     var signX = (sX(dx) > 0) ? 400 : -400;
@@ -142,13 +152,13 @@ var PlayerRealm = function(sketch) { // player charge, mouse, controls
                     var mass = CTX_playerCharge.m;
                     CTX_playerCharge.applyForce({x: mass * signX, y: mass * signY});
                 }
-    
+
                 // draw the "arrow"
                 sketch.stroke(0);
                 sketch.strokeWeight(3);
                 sketch.line(pX(coords.x), pY(coords.y), sketch.mouseX, sketch.mouseY);
             }
-    
+
             // calculate how long the physics step
             var t = 1 / 150;
             CTX_playerCharge.applyForce(CTX_level.FeAtPoint(coords.x, coords.y, CTX_playerCharge.q));
@@ -172,6 +182,7 @@ var PlayerRealm = function(sketch) { // player charge, mouse, controls
                 lose();
                 return;
             }
+            updateCamera(CTX_playerCharge);
         }
     }
 };
@@ -207,4 +218,18 @@ function timeNow(t_0) {
     mn = parseInt((dt % 3600) / 60);
     sc = dt % 60;
     return ("" + hr).padStart(2, "0") + ":" + ("" + mn).padStart(2, "0") + ":" + ("" + sc.toFixed(3)).padStart(6, "0");
+}
+
+function updateCamera(pC) {
+    if (pC.x < CTX_CAMERA.x + CTX_CAMERA.w * (CTX_CAMERA.th - 0.5)) //pan left
+        CTX_CAMERA.x = Math.max(CTX_CAMERA.w * 0.5, pC.x + (0.5 - CTX_CAMERA.th) * CTX_CAMERA.w);
+
+    if (pC.x > CTX_CAMERA.x - CTX_CAMERA.w * (CTX_CAMERA.th - 0.5)) //pan right
+        CTX_CAMERA.x = Math.min(CTX_level.w - CTX_CAMERA.w * 0.5, pC.x - (0.5 - CTX_CAMERA.th) * CTX_CAMERA.w);
+
+    if (pC.y < CTX_CAMERA.y + CTX_CAMERA.h * (CTX_CAMERA.th - 0.5)) //pan up
+        CTX_CAMERA.y = Math.max(CTX_CAMERA.h * 0.5, pC.y + (0.5 - CTX_CAMERA.th) * CTX_CAMERA.h);
+
+    if (pC.y > CTX_CAMERA.y - CTX_CAMERA.h * (CTX_CAMERA.th - 0.5)) //pan down
+        CTX_CAMERA.y = Math.min(CTX_level.h - CTX_CAMERA.h * 0.5, pC.y - (0.5 - CTX_CAMERA.th) * CTX_CAMERA.h);
 }

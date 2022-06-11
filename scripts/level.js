@@ -1,7 +1,7 @@
 class Level {
     constructor(data) {
         var PF = parseFloat;
-        
+
         var lines = data.split("\n");
         var settings = lines[0].split(/\s+/);
         for (var i = 0; i < settings.length; i++) { // w h x y px py pm pq
@@ -55,7 +55,7 @@ class Level {
             }
             this.const_voltageTable.push(subRray);
         }
-        
+
         for (var i = 0; i < obbies.length; i++) {
             obbies[i].setVoltageTable(this.w, this.h, res);
             if (obbies[i].constantVoltage) {
@@ -85,7 +85,7 @@ class Level {
     }
 
     FmAtPoint(x, y, v, q) {
-        
+
     }
 
     drawBezier(sketch, p0, p1) {
@@ -113,6 +113,32 @@ class Level {
         slope1.x *= dist / mag1;
         slope1.y *= dist / mag1;
 
+        function pX(x) {
+            x -= CTX_level.w / 2;
+            x *= CTX_htmlWIDTH / CTX_level.w;
+            x += CTX_htmlWIDTH / 2;
+            return x;
+        }
+        function pY(y) {
+            y -= CTX_level.h / 2;
+            y *= -1;
+            y *= CTX_htmlHEIGHT / CTX_level.h;
+            y += CTX_htmlHEIGHT / 2;
+            return y;
+        }
+        function p(v) {
+            return {x: pX(v.x), y: pY(v.y)};
+        }
+        function sX(x) {
+            return x * CTX_htmlWIDTH / CTX_level.w;
+        }
+        function sY(y) {
+            return y * -1 * CTX_htmlHEIGHT / CTX_level.h;
+        }
+        function s(v) {
+            return {x: sX(v.x), y: sY(v.y)};
+        }
+
         p0 = p(p0);
         p1 = p(p1);
         slope0 = s(slope0);
@@ -121,7 +147,7 @@ class Level {
         //sketch.line(pX(p0.x), pY(p0.y), pX(p1.x), pY(p1.y));
         //console.log("bezier");
     }
-    
+
     drawEquis(sketch, t) {
         var res = this.res;
 
@@ -154,11 +180,13 @@ class Level {
         }
 
         var voltages = {};
-
+        console.log(min);
+        console.log(max);
         // iterate horizontally, vertically, diagonally, diagonally, and store the midpoints where the voltage line goes through
         for (var dv = 0.05; dv <= 0.95; dv += 0.1) {
-            var ndv = 0.5 + (0.5 - dv) ** 5;
-            var voltage = (1-ndv) * min + ndv * max;
+            var ndv = 0.5 + (dv - 0.5) ** 5;
+            var voltage = (1-ndv) * min + ndv * max; // start at min, go up really fast to (min+max)/2, then go to max
+            console.log(voltage);
             voltages[voltage] = [];
             for (var i = 0; i < table.length; i++)
                 for (var j = 0; j < table.length - 1; j++)
@@ -203,13 +231,14 @@ class Level {
             var points = voltages[voltage];
             var cycles = [];
             var cycle = [];
+            var closestDistanceVal = res * 6;
             while (points.length > 0) {
                 var startPoint = points[0];
-                console.log(startPoint);
+                //console.log(startPoint);
                 if (cycle.length == 0) cycle.push(startPoint);
 
                 var closestPoint = null;
-                var closestDistance = res * 6;
+                var closestDistance = closestDistanceVal;
                 var closestIndex = -1;
                 for (var i = 1; i < points.length; i++) {
                     if (((points[i].x - startPoint.x) ** 2 + (points[i].y - startPoint.y) ** 2) < closestDistance ** 2) {
@@ -227,18 +256,18 @@ class Level {
                 }
 
                 this.drawBezier(sketch, startPoint, closestPoint);
-                
+
                 cycle.push(closestPoint);
                 points[0] = points[closestIndex];
                 points.splice(closestIndex, 1);
             }
             for (var i = 0; i < cycles.length; i++) {
                 if (cycles[i].length < 2) continue;
-                this.drawBezier(sketch, cycles[i][cycles[i].length - 1], cycles[i][0]);
+                if (((cycles[i][cycles[i].length - 1].x - cycles[i][0].x) ** 2 + (cycles[i][cycles[i].length - 1].y - cycles[i][0].y) ** 2) < closestDistanceVal) this.drawBezier(sketch, cycles[i][cycles[i].length - 1], cycles[i][0]);
             }
         }
 
-        
+
         // to render the voltage lines, iterate through voltages, pick a point, travel along the neighboring points
             // append the points to an array, then remove the points from the voltage's list
             // render the polygon for as long as you can go
@@ -248,34 +277,6 @@ class Level {
             // we will then take the control points to both be where the two slopes, and draw a bezier curve
             // alternatively the control points can be the same distance away from point1 as point2 is and same for point2
 
-        
-
-        // make a binary tree by using an object with longer and longer index names?
-            // ob["300,300"] -> point at 300,300
-            // ob["0,0"] -> point at 0,0
-            // ob["0b,0b"] -> point at 100,100
-            // ob["300a,300ba"] -> point at 200,466.67
-            // each value will be the voltages that pass through according to IVT
-            // traversal => get keys, go up, then go down
-            // algorithm will keep searching until all recursive traversals (in 2-d???) reach within 1V
-        // make a lambda function to calculate the voltage at any point
-        // go through all of the values, filter out the points, then remove them to create
-            // a polygon mapped through the segments by closest distance conditionals (the direction num?)
-        // try to fit a polar function through the curve using linear algebra?
-            // center is the physical COM (mean of all points)
-            // r = acos(theta) + bcos(2theta) + ... until for the number of points
-            // use fast algorithm to fill out the rref of the matrix
-        // or instead just use bezier curves to fill through the points properly
-        // why waste time on things that have already been invented and better?
-        // it's the 21st century after all
-        // i just want perfect looking equipotential lines
-
-        // or the simple, naïve algorithm.
-        // iterate through each of the voltages and set color
-            // go horizontally and vertically and create adjacent squares paths
-            // linear approximations of where the line falls
-            // map a polygon through the segments just by closest distance conditionals
-                // if there's more than one polygon, just go for the one that minimizes perimeter
     }
 
     drawMagns(sketch, pC) {
@@ -302,10 +303,6 @@ class Level {
         sketch.background(130, 122, 172);
     }
 
-    inEndbox(coords) {
-        
-    }
-
     checkCollision(pC) {
         for (var i = 0; i < this.obbies.length; i++) {
             if (this.obbies[i].checkCollision(pC)) return "lose";
@@ -325,5 +322,5 @@ class Level {
         return "keep playing";
         // return "lose" ,"win", "keep playing"
     }
-    
+
 }

@@ -14,6 +14,7 @@ class Level {
         this.coins = []
         this.winbox = undefined;
         this.points = 0;
+        this.coinsCnt = 0;
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i].trim();
             var key = line.split(/\s+/)[0];
@@ -314,6 +315,7 @@ class Level {
             if (this.coins[i].checkCollision(pC)){
                 //add points
                 this.points += this.coins[i].p;
+                this.coinsCnt++;
                 this.coins.splice(i,1)
                 i--;
             }

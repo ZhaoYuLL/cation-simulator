@@ -149,8 +149,8 @@ var PlayerRealm = function(sketch) { // player charge, mouse, controls
                     var dy = sketch.mouseY - pY(coords.y); // we may need inverse p's and s's for this to work
                     var signX = (sX(dx) > 0) ? 400 : -400;
                     var signY = (sY(dy) > 0) ? 400 : -400;
-                    var mass = CTX_playerCharge.m;
-                    CTX_playerCharge.applyForce({x: mass * signX, y: mass * signY});
+                    var mass = CTX_playerCharge.m; // no * 20
+                    CTX_playerCharge.applyForce({x: mass * dx * 10, y: mass * dy * -10}); //mass * signX
                 }
 
                 // draw the "arrow"

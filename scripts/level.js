@@ -44,27 +44,6 @@ class Level {
                     break;
             }
         }
-
-        // create constant voltages table
-        this.const_voltageTable = [];
-        var res = this.res;
-        var obbies = this.obbies;
-        for (var x = 0; x < this.w; x += res) {
-            var subRray = [];
-            for (var y = 0; y < this.h; y += res) {
-                subRray.push(0);
-            }
-            this.const_voltageTable.push(subRray);
-        }
-
-        for (var i = 0; i < obbies.length; i++) {
-            obbies[i].setVoltageTable(this.w, this.h, res);
-            if (obbies[i].constantVoltage) {
-                for (var j = 0; j < this.const_voltageTable.length; j++)
-                    for (var k = 0; k < this.const_voltageTable[j].length; k++)
-                        this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
-            }
-        }
     }
 
     FeAtPoint(x, y, q) {
@@ -149,7 +128,26 @@ class Level {
     }
 
     drawEquis(sketch, t) {
+        // create constant voltages table
+        this.const_voltageTable = [];
         var res = this.res;
+        var obbies = this.obbies;
+        for (var x = 0; x < this.w; x += res) {
+            var subRray = [];
+            for (var y = 0; y < this.h; y += res) {
+                subRray.push(0);
+            }
+            this.const_voltageTable.push(subRray);
+        }
+
+        for (var i = 0; i < obbies.length; i++) {
+            obbies[i].setVoltageTable(this.w, this.h, res);
+            if (obbies[i].constantVoltage) {
+                for (var j = 0; j < this.const_voltageTable.length; j++)
+                for (var k = 0; k < this.const_voltageTable[j].length; k++)
+                this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
+            }
+        }
 
         var table = [];
         for (var i = 0; i < this.const_voltageTable.length; i++) {
@@ -162,6 +160,11 @@ class Level {
                 }
             }
         }
+
+        for (var i = 0; i < this.obbies.length; i++)
+            if (this.obbies[i].constantvoltage) this.obbies[i].voltageTable = [];
+
+
         var min, max; // goes from 122, 255, 255 to 255, 255, 122, 10 lines
         if (this.minV && this.maxV) {
             min = this.minV;

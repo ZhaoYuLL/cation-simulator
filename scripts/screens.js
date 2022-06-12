@@ -39,6 +39,8 @@ function win() {
 
     var levelElem = document.getElementsByClassName("level")[currentLevel + 1];
     if (levelElem) levelElem.classList.remove("level-disabled");
+
+    storeData();
 }
 
 function lose() {
@@ -58,6 +60,8 @@ function lose() {
     else nextLevelBtn.style.display = "none";
 
     nextLevelBtn.setAttribute("onclick", "callLevel(" + (currentLevel + 1) + ")");
+
+    storeData();
 }
 
 function restartButton() {
@@ -169,45 +173,68 @@ LEVEL_DATA = [
     // {},
 ];
 
-SAVE_DATA = [
-    //1
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //2
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //3
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //4
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //5
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //6
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //7
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //8
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //9
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-    //10
-    {completed: false,
-    highscore: 0,
-    maxtime: 120},
-];
+var SAVE_DATA;
+
+function resetData() {
+    SAVE_DATA = [
+        //1
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //2
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //3
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //4
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //5
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //6
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //7
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //8
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //9
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+        //10
+        {completed: false,
+        highscore: 0,
+        maxtime: 120},
+    ];
+}
+resetData();
+
+var localStorage_key = "ian and zhao's physics platformer game data";
+function updateData() {
+    stuff = window.localStorage.getItem(localStorage_key);
+    if (stuff) {
+        SAVE_DATA = stuff;
+        for (var i = 0; i < SAVE_DATA.length; i++)
+            if (SAVE_DATA[i].completed) {
+                var levelElem = document.getElementsByClassName("level")[i + 1];
+                if (levelElem) levelElem.classList.remove("level-disabled");
+            }
+    }
+}
+updateData();
+
+function storeData() {
+    window.localStorage.setItem(localStorage_key, SAVE_DATA);
+}

@@ -90,30 +90,6 @@ class Level {
     }
 
     drawBezier(sketch, p0, p1) {
-        var dist = ((p0.x - p1.x) ** 2 + (p0.y - p1.y) ** 2) ** 0.5;
-        var field0 = this.FeAtPoint(p0.x, p0.y, 1);
-        var field1 = this.FeAtPoint(p1.x, p1.y, 1);
-        var slope0 = {x: -1 * field0.y, y: field0.x};
-        var slope1 = {x: -1 * field1.y, y: field1.x};
-        var o0 = Math.atan2(slope0.y - p0.y, slope0.x - p0.x);
-        var o1 = Math.atan2(slope1.y - p1.y, slope1.x - p1.x);
-        var o_to = Math.atan2(p1.y - p0.y, p1.x - p0.x);
-        var o_fro = Math.atan2(p0.y - p1.y, p0.x - p1.x);
-        if (Math.abs(o0 - o_to) > 3.14159265358979323846/2) {
-            slope0.x *= -1;
-            slope0.y *= -1;
-        }
-        if (Math.abs(o1 - o_fro) > 3.14159265358979323846/2) {
-            slope1.x *= -1;
-            slope1.y *= -1;
-        }
-        var mag0 = ((slope0.x) ** 2 + (slope0.y) ** 2) ** 0.5;
-        var mag1 = ((slope1.x) ** 2 + (slope1.y) ** 2) ** 0.5;
-        slope0.x *= dist / mag0;
-        slope0.y *= dist / mag0;
-        slope1.x *= dist / mag1;
-        slope1.y *= dist / mag1;
-
         function pX(x) {
             x -= CTX_level.w / 2;
             x *= CTX_htmlWIDTH / CTX_level.w;
@@ -139,13 +115,36 @@ class Level {
         function s(v) {
             return {x: sX(v.x), y: sY(v.y)};
         }
+        /* var dist = ((p0.x - p1.x) ** 2 + (p0.y - p1.y) ** 2) ** 0.5;
+        var field0 = this.FeAtPoint(p0.x, p0.y, 1);
+        var field1 = this.FeAtPoint(p1.x, p1.y, 1);
+        var slope0 = {x: -1 * field0.y, y: field0.x};
+        var slope1 = {x: -1 * field1.y, y: field1.x};
+        var o0 = Math.atan2(slope0.y - p0.y, slope0.x - p0.x);
+        var o1 = Math.atan2(slope1.y - p1.y, slope1.x - p1.x);
+        var o_to = Math.atan2(p1.y - p0.y, p1.x - p0.x);
+        var o_fro = Math.atan2(p0.y - p1.y, p0.x - p1.x);
+        if (Math.abs(o0 - o_to) > 3.14159265358979323846/2) {
+            slope0.x *= -1;
+            slope0.y *= -1;
+        }
+        if (Math.abs(o1 - o_fro) > 3.14159265358979323846/2) {
+            slope1.x *= -1;
+            slope1.y *= -1;
+        }
+        var mag0 = ((slope0.x) ** 2 + (slope0.y) ** 2) ** 0.5;
+        var mag1 = ((slope1.x) ** 2 + (slope1.y) ** 2) ** 0.5;
+        slope0.x *= dist / mag0;
+        slope0.y *= dist / mag0;
+        slope1.x *= dist / mag1;
+        slope1.y *= dist / mag1;
 
         p0 = p(p0);
         p1 = p(p1);
         slope0 = s(slope0);
         slope1 = s(slope1);
-        sketch.bezier(p0.x, p0.y, p0.x + slope0.x, p0.y + slope0.y, p1.x + slope1.x, p1.y + slope1.y, p1.x, p1.y);
-        //sketch.line(pX(p0.x), pY(p0.y), pX(p1.x), pY(p1.y));
+        sketch.bezier(p0.x, p0.y, p0.x + slope0.x, p0.y + slope0.y, p1.x + slope1.x, p1.y + slope1.y, p1.x, p1.y); */
+        sketch.line(pX(p0.x), pY(p0.y), pX(p1.x), pY(p1.y));
         //console.log("bezier");
     }
 
@@ -184,9 +183,9 @@ class Level {
         console.log(min);
         console.log(max);
         // iterate horizontally, vertically, diagonally, diagonally, and store the midpoints where the voltage line goes through
-        for (var dv = 0.05; dv <= 0.95; dv += 0.1) {
-            var ndv = 0.5 + (dv - 0.5) ** 5;
-            var voltage = (1-ndv) * min + ndv * max; // start at min, go up really fast to (min+max)/2, then go to max
+        for (var dv = 0.05; dv <= 0.95; dv += 0.05) {
+            //var ndv = 0.5 + (dv - 0.5) ** 5;
+            var voltage = (1-dv) * min + dv * max; // start at min, go up really fast to (min+max)/2, then go to max
             console.log(voltage);
             voltages[voltage] = [];
             for (var i = 0; i < table.length; i++)

@@ -165,7 +165,8 @@ var PlayerRealm = function(sketch) { // player charge, mouse, controls
             CTX_playerCharge.move(t);
             CTX_playerCharge.clearForces();
 
-            document.querySelector("#points").innerHTML = "Points: " + CTX_level.points;
+            var actualPoints = CTX_level.points + parseInt(Math.max(0, SAVE_DATA[currentLevel].maxtime - (new Date().valueOf() - startTime) / 1000)) * 10;
+            document.querySelector("#points").innerHTML = "Points: " + actualPoints;
             document.querySelector("#potometer").innerHTML = "+" + CTX_level.VAtPoint(coords.x, coords.y) + "V";
             document.querySelector("#timer").innerHTML = "Time: " + timeNow(startTime);
 

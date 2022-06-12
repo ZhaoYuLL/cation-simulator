@@ -16,6 +16,7 @@ function callLevel(num) {
     gameStatus = "loading";
     loadLevel(num);
     currentLevel = num;
+    CTX_level.points = SAVE_DATA[currentLevel].maxtime;
 }
 
 function win() {
@@ -111,20 +112,34 @@ LEVEL_DATA = [
     PC 400 300 -0.00025`,
     //level two
     `w=600 h=600 x=300 y=300 cw=600 ch=600 px=300 py=480 pm=0.005 pq=0.005 res=5 th=0
-    PC 200 300 0.0005
+    PC 200 300 0.00025
+    PC 250 220 0.000025
     PC 400 300 -0.00025
     PC 500 300 -0.00025
     PC 400 150 -0.00025
-    RW 210 400 50 50
+    RW 220 400 50 50
+    RW 320 400 50 50
+    RW 220 500 50 50
+    RW 320 500 50 50
     CN 210 500 10 5
+    CN 150 500 10 5
+    CN 110 420 10 5
+    CN 70 310 20 10
+    CN 50 300 20 10
+    CN 50 220 10 5
+    CN 20 220 20 10
+    CN 20 100 20 10
+    CN 50 100 10 5
+    CN 100 100 10 5
+    CN 120 120 10 5
     WB 210 120 50 50`,
     //level three
-    `w=1200 h=1200 x=600 y=300 cw=1200 ch=1200 px=600 py=1100 pm=0.005 pq=0.005 res=10 th=0.25
-    PC 300 300 0.0005
-    PC 900 300 -0.0005
-    PC 300 900 -0.0005
-    PC 900 900 0.0005
-    WB 25 25 50 50`,
+    `w=900 h=900 x=450 y=450 cw=900 ch=900 px=50 py=800 pm=0.005 pq=0.005 res=10 th=0.25
+    PC 450 400 0.0005
+    WB 0 382.5 750 25
+    WB 850 382.5 50 25
+    TW 700
+    `,
     //level four
     `w=1200 h=1200 x=600 y=600 cw=600 ch=600 px=600 py=1100 pm=0.005 pq=0.005 res=10 th=0.25
     PC 300 300 0.0005

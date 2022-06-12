@@ -39,6 +39,16 @@ class Level {
                     }
                     this.barriers.push(new PolyWall(verts));
                     break;
+                case "SW":
+                    var p1 = {x: PF(args[0]), y: PF(args[1])};
+                    var p2 = {x: PF(args[2]), y: PF(args[3])};
+                    var dp = {x: p2.x - p1.x, y: p2.y - p1.y};
+                    var h = PF(args[4]);
+                    var mag = (dp.x ** 2 + dp.y ** 2) ** 0.5;
+                    var dphat = {x: dp.x / mag, y: dp.y / mag};
+                    var p3 = {x: p1.x - dphat.y * h, y: p1.y + dphat.x * h};
+                    this.barriers.push(new TiltRectWall(p3.x, p3.y, mag, h, Math.atan2(dp.y, dp.x)));
+                    break;
                 case "CN":
                     this.coins.push(new Coin(PF(args[0]), PF(args[1]), PF(args[2]), PF(args[3])));
                     break;

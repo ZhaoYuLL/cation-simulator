@@ -9,7 +9,7 @@ gameStatus = "level-select";
 
 // functions for level select buttons
 function callLevel(num) {
-    if (SAVE_DATA[num - 1] && !SAVE_DATA[num - 1].completed) return;
+    //if (SAVE_DATA[num - 1] && !SAVE_DATA[num - 1].completed) return;
     levelSelect.style.display = "none";
     winScreen.style.display = "none";
     loseScreen.style.display = "none";
@@ -65,7 +65,7 @@ function restartButton() {
     // alert("executed");
     winScreen.style.display = "none";
     loseScreen.style.display = "none";
-    callLevel(currentLevel + 1);
+    callLevel(currentLevel);
 }
 let btn = document.getElementById("restart");
 btn.addEventListener('click', event => {

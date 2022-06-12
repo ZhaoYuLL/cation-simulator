@@ -6,3 +6,5 @@ Navigate a cation through fields of point charges, coins, and death walls. Earn 
 ### Installation
 
 Download the repo, and open `index.html` in a web browser. It should function, even without an internet connection.
+
+If you wish to reset your locally stored game data, open the console in developer tools and type `resetData(); storeData();`.

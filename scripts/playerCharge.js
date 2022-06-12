@@ -32,7 +32,7 @@ class PlayerCharge {
     }
 
     checkColors(color){
-        
+
     }
     draw(sketch) {
         sketch.noStroke();
@@ -40,13 +40,13 @@ class PlayerCharge {
         sketch.strokeWeight(5);
         if(this.q > 0) sketch.fill(255, 122, 122);
         else sketch.fill(122, 122, 255);
-        
+
         sketch.ellipse(pX(this.x), pY(this.y), sX(24), sY(24));
 
-        sketch.fill(200, 200, 200, 0.2);
-        sketch.stroke(0, 0, 0, 0.5)
+        sketch.fill(200, 200, 200, 25);
+        sketch.stroke(100, 100, 100, 122)
         sketch.ellipse(pX(this.x), pY(this.y), sX(this.controlRadius * 2), sY(this.controlRadius * 2));
-        
+
         // document.querySelector("#info p").innerHTML = "Acceleration: " +((this.ax ** 2 + this.ay ** 2) **     0.5).toFixed(2);
         // console.log(((this.ax ** 2 + this.ay ** 2) **0.5).toFixed(2));
         document.querySelector("#charge p").innerHTML = "Charge: " + this.q;

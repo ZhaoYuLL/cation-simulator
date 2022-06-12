@@ -9,12 +9,13 @@ class PolyWall {
             dy = this.verts[i+1].y - this.verts[i].y;
             this.trs.push(new TiltRectWall(this.verts[i].x, this.verts[i].y,
                                            (dx ** 2 + dy ** 2) ** 0.5, 1,
-                                           Math.atan2(dy, dx)));
+                                           Math.atan2(dy, dx) * 360 / 3.14159265358979323846));
         }
         this.shape = "poly";
     }
 
     draw(sketch){
+        //for (var i = 0; i < this.trs.length; i++) this.trs[i].draw(sketch);
         sketch.stroke(1);
         sketch.strokeWeight(1);
         sketch.fill(1,1,1);

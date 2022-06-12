@@ -33,7 +33,7 @@ class Level {
                     this.barriers.push(new TiltRectWall(PF(args[0]), PF(args[1]), PF(args[2]), PF(args[3]), PF(args[4])));
                     break;
                 case "PW":
-                    verts = [];
+                    var verts = [];
                     for (var i = 0; i < args.length; i += 2) {
                         verts.push({x: args[i], y: args[i+1]});
                     }
@@ -47,7 +47,8 @@ class Level {
                     var mag = (dp.x ** 2 + dp.y ** 2) ** 0.5;
                     var dphat = {x: dp.x / mag, y: dp.y / mag};
                     var p3 = {x: p1.x - dphat.y * h, y: p1.y + dphat.x * h};
-                    this.barriers.push(new TiltRectWall(p3.x, p3.y, mag, h, Math.atan2(dp.y, dp.x)));
+                    this.barriers.push(new TiltRectWall(p3.x, p3.y, mag, h,
+                        Math.atan2(dp.y, dp.x) * 360 / 3.14159265358979323846));
                     break;
                 case "CN":
                     this.coins.push(new Coin(PF(args[0]), PF(args[1]), PF(args[2]), PF(args[3])));
@@ -195,6 +196,7 @@ class Level {
         var voltages = {};
         console.log(min);
         console.log(max);
+        if (min == max && max == 0) return;
         // iterate horizontally, vertically, diagonally, diagonally, and store the midpoints where the voltage line goes through
         for (var dv = 0.05; dv <= 0.95; dv += 0.05) {
             //var ndv = 0.5 + (dv - 0.5) ** 5;

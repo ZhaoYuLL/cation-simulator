@@ -9,17 +9,19 @@ gameStatus = "level-select";
 
 // functions for level select buttons
 function callLevel(num) {
-    if (SAVE_DATA[num-2] && !SAVE_DATA[num - 2].completed) return;
+    if (SAVE_DATA[num - 1] && !SAVE_DATA[num - 1].completed) return;
     levelSelect.style.display = "none";
+    winScreen.style.display = "none";
+    loseScreen.style.display = "none";
     gameStatus = "loading";
-    loadLevel(num - 1);
-    currentLevel = num - 1;
+    loadLevel(num);
+    currentLevel = num;
 }
 
 function win() {
     document.querySelector("#coins-end").innerHTML = "Coins: " + CTX_level.coinsCnt;
-    var timePoints = parseInt(Math.max(0, SAVE_DATA[currentLevel].maxtime - timeNow(startTime) / 1000));
-    var accPoints = CTX_level.points + timePoints * 10;
+    var timePoints = Math.max(0, SAVE_DATA[currentLevel].maxtime - (new Date().valueOf() - startTime) / 1000);
+    var accPoints = CTX_level.points + parseInt(timePoints) * 10;
     document.querySelector("#points-end").innerHTML = "Points: " + accPoints;
     SAVE_DATA[currentLevel].highscore = Math.max(SAVE_DATA[currentLevel].highscore, accPoints)
     document.querySelector("#highscore-end").innerHTML = "Highscore: " + SAVE_DATA[currentLevel].highscore;
@@ -28,11 +30,11 @@ function win() {
     winScreen.style.display = "block";
     document.querySelector("#music").pause();
     SAVE_DATA[currentLevel].completed = true;
-    var nextLevelBtn = document.querySelector("#next-level2");
-    if (SAVE_DATA[currentLevel].completed && currentLevel + 1 < 10) nextLevelBtn.style.display = "block";
+    var nextLevelBtn = document.querySelector("#next-level");
+    if (SAVE_DATA[currentLevel].completed && currentLevel + 1 < 10) nextLevelBtn.style.display = "inline-block";
     else nextLevelBtn.style.display = "none";
 
-    nextLevelBtn.onclick = "callLevel(" + currentLevel + ")";
+    nextLevelBtn.setAttribute("onclick", "callLevel(" + (currentLevel + 1) + ")");
 
     var levelElem = document.getElementsByClassName("level")[currentLevel + 1];
     if (levelElem) levelElem.classList.remove("level-disabled");
@@ -40,8 +42,8 @@ function win() {
 
 function lose() {
     document.querySelector("#coins-end2").innerHTML = "Coins: " + CTX_level.coinsCnt;
-    var timePoints = parseInt(Math.max(0, SAVE_DATA[currentLevel].maxtime - timeNow(startTime) / 1000));
-    var accPoints = CTX_level.points + timePoints * 10;
+    var timePoints = Math.max(0, SAVE_DATA[currentLevel].maxtime - (new Date().valueOf() - startTime) / 1000);
+    var accPoints = CTX_level.points + parseInt(timePoints) * 10;
     document.querySelector("#points-end2").innerHTML = "Points: " + accPoints;
     SAVE_DATA[currentLevel].highscore = Math.max(SAVE_DATA[currentLevel].highscore, accPoints)
     document.querySelector("#highscore-end2").innerHTML = "Highscore: " + SAVE_DATA[currentLevel].highscore;
@@ -51,10 +53,10 @@ function lose() {
     loseScreen.style.display = "block";
     document.querySelector("#music").pause();
     var nextLevelBtn = document.querySelector("#next-level2");
-    if (SAVE_DATA[currentLevel].completed && currentLevel + 1 < 10) nextLevelBtn.style.display = "block";
+    if (SAVE_DATA[currentLevel].completed && currentLevel + 1 < 10) nextLevelBtn.style.display = "inline-block";
     else nextLevelBtn.style.display = "none";
 
-    nextLevelBtn.onclick = "callLevel(" + currentLevel + ")";
+    nextLevelBtn.setAttribute("onclick", "callLevel(" + (currentLevel + 1) + ")");
 }
 
 function restartButton() {
@@ -91,11 +93,11 @@ function selectLevel() {
 
 btn = document.getElementById("select-level");
 btn.addEventListener('click', event => {
-    restartButton();
+    selectLevel();
 });
 btn2 = document.getElementById("select-level2");
 btn2.addEventListener('click', event => {
-    restartButton();
+    selectLevel();
 });
 
 

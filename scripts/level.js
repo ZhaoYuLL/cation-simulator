@@ -159,7 +159,9 @@ class Level {
                 //this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
                 this.const_voltageTable[j][k] += obbies[i].voltage(res * j, res * k);
             }
+            console.log("finished calculating an obby");
         }
+
 
         var table = [];
         for (var i = 0; i < this.const_voltageTable.length; i++) {
@@ -277,6 +279,7 @@ class Level {
                 points[0] = points[closestIndex];
                 points.splice(closestIndex, 1);
             }
+            console.log(cycles);
             for (var i = 0; i < cycles.length; i++) {
                 if (cycles[i].length < 2) continue;
                 if (((cycles[i][cycles[i].length - 1].x - cycles[i][0].x) ** 2 + (cycles[i][cycles[i].length - 1].y - cycles[i][0].y) ** 2) < closestDistanceVal) this.drawBezier(sketch, cycles[i][cycles[i].length - 1], cycles[i][0]);

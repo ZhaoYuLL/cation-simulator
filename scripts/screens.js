@@ -239,21 +239,21 @@ LEVEL_DATA = [
     //level seven
     ``,
     //level eight
-    `w=1000 h=1000 x=500 y=500 cw=1000 ch=1000 px=80 py=80 pm=0.005 pq=0.005 res=10 th=0.33
+    `w=1000 h=1000 x=500 y=500 cw=1000 ch=1000 px=80 py=80 pm=0.005 pq=0.005 res=30 th=0.33
     RW 0 160 160 20
     RW 160 0 20 160
     PW 0 600 100 800 200 900 400 1000 0 1000
-    PC 0 600 -0.0005
+    --PC 0 600 -0.0005
     PW 400 100 500 0 700 300 600 400
     PC 400 100 -0.0005
-    PC 500 0 0.0005
-    PC 700 300 0.0005
+    --PC 500 0 0.0005
+    --PC 700 300 0.0005
     PC 600 400 -0.0005
     PW 400 300 200 500 330 754 610 710 650 430
     PC 400 300 0.0005
-    PC 200 500 -0.0005
+    --PC 200 500 -0.0005
     PC 330 750 0.0005
-    PC 610 710 -0.0005
+    --PC 610 710 -0.0005
     PC 650 430 0.0005
     PW 1000 580 1000 610 840 600
     PC 840 600 -0.0005
@@ -299,7 +299,7 @@ var localStorage_key = "ian and zhao's physics platformer game data";
 function updateData() {
   stuff = window.localStorage.getItem(localStorage_key);
   if (stuff) {
-    SAVE_DATA = stuff;
+    SAVE_DATA = JSON.parse(stuff);
     for (var i = 0; i < SAVE_DATA.length; i++)
       if (SAVE_DATA[i].completed) {
         var levelElem = document.getElementsByClassName("level")[i + 1];
@@ -310,5 +310,5 @@ function updateData() {
 updateData();
 
 function storeData() {
-  window.localStorage.setItem(localStorage_key, SAVE_DATA);
+  window.localStorage.setItem(localStorage_key, JSON.stringify(SAVE_DATA));
 }

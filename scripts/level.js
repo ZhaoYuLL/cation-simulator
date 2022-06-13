@@ -251,7 +251,7 @@ class Level {
 
             sketch.noFill();
             sketch.strokeWeight(sX(1));
-            sketch.stroke(255 - dv * 122, 255, 122 + dv * 122);
+            sketch.stroke(255 - dv * 183, 200 + dv * 55, 63 + dv * 183);
             var points = voltages[voltage];
             var cycles = [];
             var cycle = [];

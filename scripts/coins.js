@@ -9,10 +9,10 @@ class Coin {
 
     draw(sketch) {
         if (!this.show) return;
-        sketch.stroke(0);
+        sketch.stroke(255);
         sketch.strokeWeight(1);
         sketch.fill(255,255,0);
-        
+
         // var photo = loadImage("../favicon.ico");
         // var maskImage = createGraphics(512,512);
         // maskImage.ellipse(pX(this.x),pY(this.y),sX(this.r));
@@ -24,7 +24,7 @@ class Coin {
     //array of coins
     //if the the player charge is inside one of the coins, remove point, add the points from the coin to the counter
     //e.g: if coin.contains(playercharge) instead of player charge is in a coin if that makes sense
-    
+
     checkPoint (x, y) {
         return ((x - this.x) ** 2 + (y - this.y) ** 2) < this.r ** 2;
     }

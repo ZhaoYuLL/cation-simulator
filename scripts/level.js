@@ -30,6 +30,9 @@ class Level {
                 case "RW":
                     this.barriers.push(new RectWall(PF(args[0]), PF(args[1]), PF(args[2]), PF(args[3])));
                     break;
+                case "BW":
+                    this.barriers.push(new BallWall(PF(args[0]), PF(args[1]), PF(args[2])));
+                    break;
                 case "TW":
                     this.barriers.push(new TiltRectWall(PF(args[0]), PF(args[1]), PF(args[2]), PF(args[3]), PF(args[4])));
                     break;

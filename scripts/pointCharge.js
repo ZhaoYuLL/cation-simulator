@@ -45,6 +45,6 @@ class PointCharge {
     }
 
     checkCollision(pC) {
-        return ((this.x - pC.x) ** 2 + (this.y - pC.y) ** 2) ** 0.5 < (pC.r + this.r);
+        return ((this.x - pC.x) ** 2 + (this.y - pC.y) ** 2) ** 0.5 < (pC.r + this.r / 2);
     }
 }

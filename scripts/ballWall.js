@@ -9,7 +9,7 @@ class BallWall {
     draw(sketch){
         sketch.noStroke();
         sketch.fill(1);
-        sketch.ellipse(this.x, this.y, this.r * 2, this.r * 2);
+        sketch.ellipse(pX(this.x), pY(this.y), sX(this.r * 2), sY(this.r * 2));
     }
 
     checkCollision(pC) {

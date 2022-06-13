@@ -44,7 +44,7 @@ function updateCanvas(sketch) {
   sketch.resizeCanvas(CTX_htmlWIDTH, CTX_htmlHEIGHT, false);
 }
 
-function loadLevel(n) {
+function loadLevel(n, reload) {
   CTX_level = new Level(LEVEL_DATA[n]);
   // camera should be initalized by level data
   // th * CTX_level.x is the left-most position of PC before the camera pans left
@@ -71,7 +71,7 @@ function loadLevel(n) {
   document.querySelector("#music").play();
   gameStatus = "playing";
 
-  DRAWEQUIS = true;
+  if (reload !== true) DRAWEQUIS = true;
   BGRealmSketch.draw();
   ObstacleRealmSketch.draw();
   //PlayerRealmSketch.draw();
@@ -92,10 +92,10 @@ var BGRealm = function (sketch) {
     if (gameStatus == "playing") {
       updateCanvas(sketch);
       CTX_level.drawBackground(sketch);
-      console.log("something2");
+      //console.log("something2");
       if (DRAWEQUIS) {
         CTX_level.drawEquis(sketch, 0);
-        console.log("something");
+        //console.log("something");
         document.querySelector("#equis-img").src =
           canvas.elt.toDataURL("image/png");
         DRAWEQUIS = false;
@@ -145,7 +145,7 @@ var PlayerRealm = function (sketch) {
   sketch.setup = function () {
     canvas = sketch.createCanvas(CTX_htmlWIDTH, CTX_htmlHEIGHT);
     canvas.parent("canvas-container");
-    console.log("loaded player realm canv");
+    //console.log("loaded player realm canv");
     sketch.frameRate(60);
   };
   sketch.draw = function () {

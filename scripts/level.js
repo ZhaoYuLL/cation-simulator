@@ -19,6 +19,7 @@ class Level {
             var line = lines[i].trim();
             var key = line.split(/\s+/)[0];
             var args = line.split(/\s+/).slice(1);
+            console.log("making a " + key);
             switch (key) {
                 case "PC":
                     this.obbies.push(new PointCharge(PF(args[0]), PF(args[1]), PF(args[2])));
@@ -34,8 +35,8 @@ class Level {
                     break;
                 case "PW":
                     var verts = [];
-                    for (var i = 0; i < args.length; i += 2) {
-                        verts.push({x: args[i], y: args[i+1]});
+                    for (var j = 0; j < args.length; j += 2) {
+                        verts.push({x: args[j], y: args[j+1]});
                     }
                     this.barriers.push(new PolyWall(verts));
                     break;
@@ -52,6 +53,8 @@ class Level {
                     break;
                 case "CN":
                     this.coins.push(new Coin(PF(args[0]), PF(args[1]), PF(args[2]), PF(args[3])));
+                    break;
+                default:
                     break;
             }
         }
@@ -150,16 +153,19 @@ class Level {
             }
             this.const_voltageTable.push(subRray);
         }
+        //console.log("finished making the table");
 
         for (var i = 0; i < obbies.length; i++) {
             //obbies[i].setVoltageTable(this.w, this.h, res);
             if (obbies[i].constantVoltage) {
                 for (var j = 0; j < this.const_voltageTable.length; j++)
-                for (var k = 0; k < this.const_voltageTable[j].length; k++)
-                //this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
-                this.const_voltageTable[j][k] += obbies[i].voltage(res * j, res * k);
+                for (var k = 0; k < this.const_voltageTable[j].length; k++) {
+                    //this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
+                    this.const_voltageTable[j][k] += obbies[i].voltage(res * j, res * k);
+                    //console.log("x");
+                }
             }
-            console.log("finished calculating an obby");
+            //console.log("finished calculating an obby");
         }
 
 
@@ -197,14 +203,14 @@ class Level {
         }
 
         var voltages = {};
-        console.log(min);
-        console.log(max);
+        //console.log(min);
+        //console.log(max);
         if (min == max && max == 0) return;
         // iterate horizontally, vertically, diagonally, diagonally, and store the midpoints where the voltage line goes through
         for (var dv = 0.05; dv <= 0.95; dv += 0.05) {
             //var ndv = 0.5 + (dv - 0.5) ** 5;
             var voltage = (1-dv) * min + dv * max; // start at min, go up really fast to (min+max)/2, then go to max
-            console.log(voltage);
+            //console.log(voltage);
             voltages[voltage] = [];
             for (var i = 0; i < table.length; i++)
                 for (var j = 0; j < table.length - 1; j++)
@@ -279,7 +285,7 @@ class Level {
                 points[0] = points[closestIndex];
                 points.splice(closestIndex, 1);
             }
-            console.log(cycles);
+            //console.log(cycles);
             for (var i = 0; i < cycles.length; i++) {
                 if (cycles[i].length < 2) continue;
                 if (((cycles[i][cycles[i].length - 1].x - cycles[i][0].x) ** 2 + (cycles[i][cycles[i].length - 1].y - cycles[i][0].y) ** 2) < closestDistanceVal) this.drawBezier(sketch, cycles[i][cycles[i].length - 1], cycles[i][0]);

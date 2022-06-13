@@ -7,7 +7,7 @@ class RectWall {
         this.shape = "rect";
     }
 
-    draw(sketch){   
+    draw(sketch){
         sketch.stroke(1);
         sketch.strokeWeight(1);
         sketch.fill(1,1,1);

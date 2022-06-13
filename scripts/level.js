@@ -152,11 +152,12 @@ class Level {
         }
 
         for (var i = 0; i < obbies.length; i++) {
-            obbies[i].setVoltageTable(this.w, this.h, res);
+            //obbies[i].setVoltageTable(this.w, this.h, res);
             if (obbies[i].constantVoltage) {
                 for (var j = 0; j < this.const_voltageTable.length; j++)
                 for (var k = 0; k < this.const_voltageTable[j].length; k++)
-                this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
+                //this.const_voltageTable[j][k] += obbies[i].voltageTable[j][k];
+                this.const_voltageTable[j][k] += obbies[i].voltage(res * j, res * k);
             }
         }
 

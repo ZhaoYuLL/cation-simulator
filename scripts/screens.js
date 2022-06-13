@@ -62,10 +62,6 @@ function lose() {
   );
   var accPoints = CTX_level.points + parseInt(timePoints) * 10;
   document.querySelector("#points-end2").innerHTML = "Points: " + accPoints;
-  SAVE_DATA[currentLevel].highscore = Math.max(
-    SAVE_DATA[currentLevel].highscore,
-    accPoints
-  );
   document.querySelector("#highscore-end2").innerHTML =
     "Highscore: " + SAVE_DATA[currentLevel].highscore;
   document.querySelector("#time-end2").innerHTML =
